@@ -71,6 +71,11 @@ local function include_surrounding_whitespace(bufnr, textobject, selection_mode)
     end_row, end_col = next_position(bufnr, end_row, end_col, true)
   end
   if extended then
+    -- NOTE: if selection mode if linewise and extended then take previous end_row since line wise selection extends the
+    -- whole line and will extend to other nodes on this line
+    if selection_mode == "V" then
+      end_row = end_row - 1
+    end
     -- don't extend in both directions
     return { start_row, start_col, end_row, end_col }
   end
